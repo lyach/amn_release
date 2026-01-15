@@ -22,6 +22,7 @@ dependencies = [
     "silence-tensorflow",
     "protobuf==3.20.3",
     "matplotlib-inline==0.1.6",
+    "requests",
 ]
 
 # --- Build System ---
