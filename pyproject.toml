@@ -1,0 +1,38 @@
+# --- Project Metadata ---
+[project]
+name = "amn-release"
+version = "0.1.0"
+description = "AMN: Automated Metabolic Network reconstruction (Fork)"
+readme = "README.md"
+requires-python = ">=3.7, <3.10" # TensorFlow 2.6 only supports Python 3.6-3.9. 
+
+# --- Dependencies ---
+# Mapped directly from environment_amn.yml
+dependencies = [
+    "tensorflow==2.6.0",
+    "keras==2.6.0",
+    "numpy>=1.19.2,<1.20", 
+    "cobra",
+    "pandas",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "pydoe2",
+    "ipykernel",
+    "silence-tensorflow",
+    "protobuf==3.20.3",
+    "matplotlib-inline==0.1.6",
+]
+
+# --- Build System ---
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# --- Package Discovery ---
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+# --- uv Configuration ---
+[tool.uv]
+index-url = "https://pypi.org/simple"
