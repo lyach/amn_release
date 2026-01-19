@@ -11,7 +11,7 @@ requires-python = ">=3.7, <3.10" # TensorFlow 2.6 only supports Python 3.6-3.9.
 dependencies = [
     "tensorflow==2.6.0",
     "keras==2.6.0",
-    "numpy>=1.19.2,<1.20", 
+    "numpy>=1.19.2,<1.20",
     "cobra",
     "pandas",
     "scikit-learn",
@@ -23,6 +23,7 @@ dependencies = [
     "protobuf==3.20.3",
     "matplotlib-inline==0.1.6",
     "requests",
+    "jupytext>=1.15.2",
 ]
 
 # --- Build System ---

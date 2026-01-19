@@ -1,17 +1,22 @@
-# Welcome to the Artificial Metabolic Networks repository
+# Artificial Metabolic Networks: AMN-Reservoir Re-implementation
 
-This repository is entirely written in **python**. We make use of **jupyter** notebooks,
-calling custom functions libraries storing the main objects and functions used in the project. We detail here two ways of using the repo, either on **Colab** or **locally**.
+This repository provides a re-implementation of the AMN-Reservoir architecture described by [Faure et al. (2023)](https://www.nature.com/articles/s41467-023-40380-0).
 
-One can clone the git directly in a Google Drive and open the notebooks in Google Colab. This is a good way to make first testings and have a glimpse of the project.
+This hybrid framework is designed to bridge the gap between experimental media compositions and metabolic flux predictions. This addresses the "unknown uptake flux" problem in Constraint-Based Modeling (CBM).
 
-Also, one can clone the git locally and install a **conda** environment we provide, to be used for the project once it's linked to your jupyter environment. This will provide better reproducibility than the colab install. We recommend this option for computationally costly usage of the repository.
+### The AMN-Reservoir
 
-A **tutorial** is available as the notebook `Tutorial.ipynb`. This is a good place to start, going through all the detailed steps for building and training an AMN model. This step-by-step exploration of the project will take about 20 minutes to be runned.
+The AMN-Reservoir solves this by embedding a metabolic model within a machine learning architecture. It uses a two-step learning process to map realistic uptake fluxes to its experimental media.
 
-Note: For local installs, only Linux (Ubuntu 22.04) and MacOS (Monterey) have been tested, but Windows should work.
+There are 2 main components to this framework: 
 
-## Installation 
+1. **The Frozen Reservoir (Mechanistic Layer)**:
+First, an Artificial Metabolic Network (AMN) is pre-trained on a large dataset of FBA/pFBA simulations. This model learns the stoichiometric constraints of the metabolic network. Once trained, its parameters are frozen. This frozen model acts as a differentiable "Reservoir" that mimics the behavior of an FBA solver but allows for gradient backpropagation.
+2. **The Trainable Pre-processing Layer (Neural Layer)**:
+A trainable neural network layer is attached prior to the Reservoir. This layer takes experimental media composition ($C_{med}$) as input and predicts uptake flux bounds ($V_{in}$). The architecture is trained on measured growth rates. The error between the predicted and measured growth is backpropagated through the frozen Reservoir, to update the pre-processing layer. This forces the neural layer to learn the complex, non-linear relationship between the presence of nutrients and their specific uptake rates.
+
+
+## Environment set-up 
 
 ### Using `uv`
 
