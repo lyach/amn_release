@@ -16,3 +16,6 @@ Reservoir/IJN*.h5
 # environment files
 .venv/
 uv.lock
+
+# experiments
+experiments/*
