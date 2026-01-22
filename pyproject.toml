@@ -4,14 +4,14 @@ name = "amn-release"
 version = "0.1.0"
 description = "AMN: Automated Metabolic Network reconstruction (Fork)"
 readme = "README.md"
-requires-python = ">=3.7, <3.10" # TensorFlow 2.6 only supports Python 3.6-3.9. 
+requires-python = ">=3.9"
 
 # --- Dependencies ---
 # Mapped directly from environment_amn.yml
 dependencies = [
-    "tensorflow==2.6.0",
-    "keras==2.6.0",
-    "numpy>=1.19.2,<1.20",
+    "tensorflow[and-cuda]==2.15.1",
+    "keras>=2.15,<3.0",
+    "numpy>=1.24",
     "cobra",
     "pandas",
     "scikit-learn",
@@ -26,6 +26,7 @@ dependencies = [
     "jupytext>=1.15.2", # delete later
     "referencing<0.30.0",  # delete later
     "jsonschema<5.0.0",    # delete later
+    "scikeras>=0.12.0",
 ]
 
 # --- Build System ---
