@@ -17,4 +17,5 @@ Reservoir/IJN*.h5
 .venv/
 uv.lock
 
+# experiments
 experiments/*
