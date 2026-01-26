@@ -19,3 +19,6 @@ uv.lock
 
 # experiments
 experiments/*
+
+# Large models
+Reservoir/*
