@@ -27,13 +27,17 @@ from Library.Build_Dataset import *
 import keras
 import keras.backend as K
 import tensorflow as tf
-tf.config.set_visible_devices([], 'GPU')
-visible_devices = tf.config.get_visible_devices()
-for device in visible_devices:
-    assert device.device_type != 'GPU'
-import tensorflow as tf    
-from silence_tensorflow import silence_tensorflow
-silence_tensorflow() # Tensorflow generates WARNINGS because of GPU unused, silence it
+
+# GPU enabled with memory growth
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"Using {len(gpus)} GPU(s)")
+    except RuntimeError as e:
+        print(e)
+        
 from keras import initializers
 from keras.models import Sequential
 from keras.models import load_model
@@ -1255,7 +1259,7 @@ class Neural_Model:
                  regression=True, 
                  epochs=0, train_rate=1e-3, dropout=0.25, batch_size=5,
                  niter=0, xfold=5, # Cross valisation LOO does not work
-                 es=False, # early stopping
+                 es=True, # early stopping
                  verbose=False,
                 ):
         # Create empty object
