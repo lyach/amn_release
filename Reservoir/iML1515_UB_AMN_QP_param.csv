@@ -1,1 +1,1 @@
-./Dataset_model/iML1515_UB,AMN_QP,['BIOMASS_Ec_iML1515_core_75p37M'],11.0,38,7368,1,50,relu,4,0.01,0.9,100,True,0.001,0.25,128,0,5,True
+./Dataset_model/iML1515_UB,AMN_QP,['BIOMASS_Ec_iML1515_core_75p37M'],11.0,38,7368,1,50,relu,4,0.01,0.9,500,True,0.001,0.25,128,0,5,True
