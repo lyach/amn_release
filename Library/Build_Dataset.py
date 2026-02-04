@@ -492,7 +492,7 @@ def create_random_medium_cobra(model, objective,
     #              (can be empty then varmed are drawn at random)
     # - levmed: teh number of level a flux can take
     # - valmed: the maximum value the flux can take
-    # - ratmed: the ration of fluxes turned on
+    # - ratmed: the ratio of fluxes turned on
     # - method: the method used by Cobra
     # Make sure the medium does not kill the objective
     # i.e. objective > cobra_min_objective
