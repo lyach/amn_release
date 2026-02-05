@@ -1,0 +1,5 @@
+name,EX_glc__D_e_i,EX_ala__L_e_i,EX_arg__L_e_i,EX_asn__L_e_i,EX_asp__L_e_i,EX_glu__L_e_i,EX_gln__L_e_i,EX_gly_e_i,EX_his__L_e_i,EX_ile__L_e_i,EX_leu__L_e_i,EX_lys__L_e_i,EX_met__L_e_i,EX_phe__L_e_i,EX_pro__L_e_i,EX_ser__L_e_i,EX_thr__L_e_i,EX_trp__L_e_i,EX_tyr__L_e_i,EX_val__L_e_i,EX_thm_e_i,EX_pydxn_e_i,EX_cys__L_e_i,EX_cl_e_i,EX_nh4_e_i,EX_so4_e_i,EX_pi_e_i,EX_k_e_i,EX_na1_e_i,EX_mg2_e_i,EX_ca2_e_i,EX_fe2_e_i,EX_zn2_e_i,EX_cu2_e_i,EX_mobd_e_i,EX_cit_e_i,EX_tsul_e_i,EX_o2_e_i,EX_h2o_e_i,EX_h_e_i,EX_co2_e_i
+level,100,100,100,100,100,100,100,1,100,1,100,100,100,100,100,100,1,1,100,1,100,1,1,1,100,100,100,100,100,100,100,100,100,100,1,100,1,1,1,1,1
+max_value,200.0,4.0,2.0,4.0,2.0,4.0,4.0,2.0,2.0,2.0,4.0,2.0,2.0,2.0,4.0,4.0,2.0,2.0,1.0,2.0,0.1,0.2,4.0,110.046,300.0,110.550001,284.6,343.0,269.2702,51.0,1.5,0.05,0.01,0.001,0.1,2.0,50.0,20.0,1000.0,1000.0,20.0
+ratio_drawing,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+comment,parameters generated from experimental medium distribution,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
