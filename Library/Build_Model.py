@@ -1414,10 +1414,18 @@ class Neural_Model:
         if not os.path.isfile(filemodel):
             print(filemodel)
             sys.exit('model file not found')
+            
+        # Setup progress bar
+        steps = ['Reading params', 'Loading matrices', 'Loading model']
+        pbar = tqdm(total=3, desc="Loading Model", leave=False) if verbose else None
+
         # First read parameter file
+        if pbar: pbar.set_description(steps[0])
         with open(fileparam, 'r') as h:
             for line in h:
                 K = line.rstrip().split(',')
+        if pbar: pbar.update(1)
+
         # model architecture
         self.trainingfile =  str(K[0])
         self.model_type =  str(K[1])
@@ -1447,9 +1455,14 @@ class Neural_Model:
         self.objective = self.objective.replace('\'', '')
         self.objective = self.objective.replace("\"", "")
         self.objective = self.objective.split(',')
+        
         # Get additional parameters (matrices)
+        if pbar: pbar.set_description(steps[1])
         self.get_parameter(verbose=verbose)
+        if pbar: pbar.update(1)
+        
         # Then load model
+        if pbar: pbar.set_description(steps[2])
         if self.model_type == 'AMN_Wt':
             self.model = load_model(filemodel,
                                     custom_objects={'RNNCell':RNNCell,
@@ -1468,6 +1481,10 @@ class Neural_Model:
             # print("loaded")
         else:
             self.model = load_model(filemodel, compile=False)
+            
+        if pbar: 
+            pbar.update(1)
+            pbar.close()
 
     def printout(self,filename=''):
         if filename != '':
@@ -1548,8 +1565,8 @@ class RC_Model:
         
         # Create reservoir
         self.res = Neural_Model()
-        self.res.load(reservoirfile)
-        self.res.get_parameter(verbose=verbose)
+        self.res.load(reservoirfile, verbose=verbose)
+        # self.res.get_parameter(verbose=verbose) # Already called in load()
         
         # Get matrices for loss computation
         self.S = self.res.S # Stoichiometric matrix
