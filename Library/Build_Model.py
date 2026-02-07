@@ -51,6 +51,7 @@ from keras.layers import Activation
 from keras.utils import get_custom_objects
 from keras.utils import CustomObjectScope
 from keras.callbacks import EarlyStopping
+from tqdm.auto import tqdm
 
 from sklearn import linear_model
 from sklearn.model_selection import cross_val_score, KFold
@@ -1040,13 +1041,28 @@ def evaluate_model(model, x, y_true, parameter,
         param = copy.copy(parameter)
         param.X, param.Y = x, y_true
         X, Y = model_input(param, verbose=verbose)
-        param.X, param.Y = X, Y        
-    y_pred = model.predict(x) # whole y prediction
+        param.X, param.Y = X, Y
+        
+    # tqdm progress bar during predict when verbose=True
+    if verbose and verbose != 2:
+        n_samples = x.shape[0]
+        batch_size = getattr(parameter, 'batch_size', 32)
+        n_batches = int(np.ceil(n_samples / batch_size))
+        pbar = tqdm(total=n_batches, desc='Predicting', unit='batch', leave=False)
+        class _PredictProgress(tf.keras.callbacks.Callback):
+            def on_predict_batch_end(self, batch, logs=None):
+                pbar.update(1)
+        y_pred = model.predict(x, batch_size=batch_size,
+                               callbacks=[_PredictProgress()], verbose=0)
+        pbar.close()
+    else:
+        predict_v = True if verbose == 2 else False
+        y_pred = model.predict(x, verbose=predict_v)
 
     # AMN models have NBR_CONSTRAINT constraints added to y_true
     end = y_true.shape[1] - NBR_CONSTRAINT \
     if 'AMN' in parameter.model_type else y_true.shape[1] 
-    print('----------', end)
+    if verbose: print('----------', end)
     if parameter.regression:
         yt, yp = y_true[:,:end], y_pred[:,:end]
         if yt.shape[0] == 1: # LOO case
@@ -1103,6 +1119,26 @@ def model_type(parameter, verbose=False):
         print(parameter.model_type)
         sys.exit('not a trainable model')
 
+class TqdmProgressCallback(tf.keras.callbacks.Callback):
+    """Lightweight tqdm progress bar for Keras model.fit()."""
+    def __init__(self, total_epochs, desc='Training'):
+        super().__init__()
+        self.total_epochs = total_epochs
+        self.desc = desc
+        self.pbar = None
+    def on_train_begin(self, logs=None):
+        self.pbar = tqdm(total=self.total_epochs, desc=self.desc,
+                         unit='epoch', leave=False)
+    def on_epoch_end(self, epoch, logs=None):
+        if self.pbar is not None:
+            loss = logs.get('loss', 0)
+            val_loss = logs.get('val_loss', 0)
+            self.pbar.set_postfix(loss=f'{loss:.4f}', val_loss=f'{val_loss:.4f}')
+            self.pbar.update(1)
+    def on_train_end(self, logs=None):
+        if self.pbar is not None:
+            self.pbar.close()
+
 def train_model(parameter, Xtrain, Ytrain, Xtest, Ytest, verbose=False):
     # A standard function to create a model, fit, and test
     # with early stopping
@@ -1145,8 +1181,10 @@ def train_model(parameter, Xtrain, Ytrain, Xtest, Ytest, verbose=False):
         es = EarlyStopping(monitor='val_loss', mode='min',
                            patience=10, verbose=verbose)
         callbacks = [es] if model.es else []
-        # fit
+        # tqdm progress bar when verbose but not showing Keras per-epoch output
         v = True if verbose == 2 else False
+        if verbose and verbose != 2:
+            callbacks.append(TqdmProgressCallback(model.epochs))
         epochs = 0.9 * model.epochs
         history = Net.model.fit(Xtrain, Ytrain, 
                                 validation_data=(Xtest, Ytest),

@@ -22,3 +22,6 @@ experiments/*
 
 # Large models
 Reservoir/*
+
+# Aida Ying Results
+Result/AidaYing_UB_AMN_QP*
